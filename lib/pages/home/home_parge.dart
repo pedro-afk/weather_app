@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapp/widgets/custom_text.dart';
 import 'package:weatherapp/widgets/drawer_menu.dart';
 
@@ -34,8 +35,8 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       backgroundColor: Colors.transparent,
       centerTitle: true,
-      title: const CustomText(
-        text: "Good evening!",
+      title: CustomText(
+        text: "Boa noite!",
         fontSize: 22,
         fontWeight: FontWeight.w300,
       ),
@@ -53,21 +54,21 @@ class _HomePageState extends State<HomePage> {
       margin: const EdgeInsets.only(top: 30),
       child: Center(
         child: Column(
-          children: const [
+          children: [
             CustomText(
-              text: "Piraju",
+              text: "Timburi",
               color: Colors.white,
               fontSize: 52,
               fontWeight: FontWeight.w300,
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             CustomText(
               text: "Sexta-feira, Janeiro, 2022",
               color: Colors.white,
               fontSize: 22,
               fontWeight: FontWeight.w300,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             CustomText(
               text: "19°C",
               fontSize: 72,
@@ -82,20 +83,56 @@ class _HomePageState extends State<HomePage> {
               decorationThickness: 2,
               textDecorationStyle: TextDecorationStyle.dashed,
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             CustomText(
-              text: "Clear",
+              text: "Limpo",
               fontSize: 20,
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             CustomText(
               text: "16°c/18°c",
               fontSize: 20,
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),
+            const SizedBox(height: 30),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Card(
+                    child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            CustomText(
+                              text: "Sabado",
+                              fontSize: 18,
+                            ),
+                            const Icon(
+                              WeatherIcons.day_sunny,
+                              size: 40,
+                              color: Colors.yellow,
+                            ),
+                            const SizedBox(height: 20),
+                            CustomText(
+                              text: "16°c/18°c",
+                              fontSize: 16,
+                            ),
+                            CustomText(
+                              text: "Chuva",
+                              fontSize: 16,
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
