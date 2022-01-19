@@ -54,6 +54,51 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$isNightAtom = Atom(name: '_HomeControllerBase.isNight');
+
+  @override
+  bool get isNight {
+    _$isNightAtom.reportRead();
+    return super.isNight;
+  }
+
+  @override
+  set isNight(bool value) {
+    _$isNightAtom.reportWrite(value, super.isNight, () {
+      super.isNight = value;
+    });
+  }
+
+  final _$dateInFullAtom = Atom(name: '_HomeControllerBase.dateInFull');
+
+  @override
+  String get dateInFull {
+    _$dateInFullAtom.reportRead();
+    return super.dateInFull;
+  }
+
+  @override
+  set dateInFull(String value) {
+    _$dateInFullAtom.reportWrite(value, super.dateInFull, () {
+      super.dateInFull = value;
+    });
+  }
+
+  final _$weatherCodeAtom = Atom(name: '_HomeControllerBase.weatherCode');
+
+  @override
+  String get weatherCode {
+    _$weatherCodeAtom.reportRead();
+    return super.weatherCode;
+  }
+
+  @override
+  set weatherCode(String value) {
+    _$weatherCodeAtom.reportWrite(value, super.weatherCode, () {
+      super.weatherCode = value;
+    });
+  }
+
   final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase');
 
@@ -80,11 +125,36 @@ mixin _$HomeController on _HomeControllerBase, Store {
   }
 
   @override
+  dynamic setNightMode(bool value) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setNightMode');
+    try {
+      return super.setNightMode(value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setDate(String value) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setDate');
+    try {
+      return super.setDate(value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 weather: ${weather},
 isLoading: ${isLoading},
-message: ${message}
+message: ${message},
+isNight: ${isNight},
+dateInFull: ${dateInFull},
+weatherCode: ${weatherCode}
     ''';
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapp/model/weather.dart';
 import 'package:weatherapp/pages/home/home_controller.dart';
+import 'package:weatherapp/repositories/home_repository.dart';
 
 import 'package:weatherapp/widgets/custom_text.dart';
 
@@ -13,53 +15,47 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeController _controller = HomeController();
+  final HomeRepository _repository = HomeRepository();
+  late final HomeController _controller;
 
   @override
   void initState() {
-    _controller.fetchData();
     super.initState();
+    _controller = HomeController(repository: _repository);
+    _controller.fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _buildPage(),
-    );
-  }
-
-  _appBar() {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      actions: [
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.add,
-              color: Color(0xFF404040),
-            ))
-      ],
-    );
+    return Observer(builder: (_) {
+      return Scaffold(
+        backgroundColor:
+            _controller.isNight ? const Color(0xFF202020) : Colors.grey[50],
+        body: _buildPage(),
+      );
+    });
   }
 
   _body() {
     return Observer(builder: (_) {
-      return Column(
+      return ListView(
         children: [
-          CustomText(
-            text: _controller.weather.results!.city!,
-            color: const Color(0xFF404040),
-            fontWeight: FontWeight.w500,
-            fontSize: 28,
+          const SizedBox(height: 20),
+          Center(
+            child: CustomText(
+              text: _controller.weather.results!.city!,
+              color:
+                  _controller.isNight ? Colors.white : const Color(0xFF404040),
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.all(
+              decoration: BoxDecoration(
+                color: _controller.isNight ? Colors.blueGrey : Colors.blue,
+                borderRadius: const BorderRadius.all(
                   Radius.circular(20),
                 ),
               ),
@@ -67,8 +63,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 40),
-                    const Icon(WeatherIcons.day_cloudy,
-                        size: 70, color: Colors.white),
+                    verifyWeatherIcon(Colors.white, 70),
                     const SizedBox(height: 25),
                     CustomText(
                       text: _controller.weather.results!.description!,
@@ -78,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 10),
                     CustomText(
-                      text: "Segunda, 17, Janeiro",
+                      text: _controller.dateInFull,
                       color: Colors.white,
                     ),
                     const SizedBox(height: 25),
@@ -93,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       thickness: 1,
                     ),
-                    Container(
+                    SizedBox(
                       height: 90,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Icon(
-                                  WeatherIcons.wind,
+                                  WeatherIcons.windy,
                                   size: 30,
                                   color: Colors.white,
                                 ),
@@ -172,20 +167,96 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            width: 290,
-            child: TextButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  CustomText(
-                    text: "Previsão para os próximos dias",
-                    color: const Color(0xFF404040),
-                    fontSize: 17,
+            margin: const EdgeInsets.only(left: 14.0),
+            height: 170,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const ScrollPhysics(),
+              itemCount: _controller.weather.results!.forecast!.length,
+              scrollDirection: Axis.horizontal,
+              key: widget.key,
+              itemBuilder: (context, idx) {
+                Forecast forecast = _controller.weather.results!.forecast![idx];
+                return SizedBox(
+                  width: 140,
+                  child: Card(
+                    elevation: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomText(
+                              text: "${forecast.date} - ",
+                              color: _controller.isNight
+                                  ? Colors.white
+                                  : const Color(0xFF404040),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            CustomText(
+                              text: "${forecast.weekday}",
+                              color: _controller.isNight
+                                  ? Colors.white
+                                  : const Color(0xFF404040),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.keyboard_arrow_up_rounded,
+                                color: Colors.red),
+                            CustomText(
+                              text: "${forecast.max}°",
+                              color: _controller.isNight
+                                  ? Colors.white
+                                  : const Color(0xFF404040),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            const Icon(Icons.keyboard_arrow_down_rounded,
+                                color: Colors.blue),
+                            CustomText(
+                              text: "${forecast.min}°",
+                              color: _controller.isNight
+                                  ? Colors.white
+                                  : const Color(0xFF404040),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
+                        ),
+                        CustomText(
+                          text: "${forecast.description}",
+                          color: _controller.isNight
+                              ? Colors.white
+                              : const Color(0xFF404040),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        const SizedBox(height: 15),
+                        verifyWeatherIconForeCast(
+                            _controller.isNight
+                                ? Colors.white
+                                : const Color(0xFF404040),
+                            30,
+                            forecast),
+                      ],
+                    ),
+                    color: _controller.isNight
+                        ? const Color(0xFF303030)
+                        : Colors.grey[50],
                   ),
-                ],
-              ),
+                );
+              },
             ),
-          )
+          ),
+          const SizedBox(height: 10),
         ],
       );
     });
@@ -204,5 +275,61 @@ class _HomePageState extends State<HomePage> {
     return const Center(
       child: CircularProgressIndicator(),
     );
+  }
+
+  verifyWeatherIcon(Color color, double size) {
+    return Observer(builder: (_) {
+      if (_controller.weather.results!.conditionSlug == 'storm') {
+        return Icon(WeatherIcons.storm_showers, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'snow') {
+        return Icon(WeatherIcons.snow, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'hail') {
+        return Icon(WeatherIcons.hail, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'rain') {
+        return Icon(WeatherIcons.rain, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'fog') {
+        return Icon(WeatherIcons.fog, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'clear_day') {
+        return Icon(WeatherIcons.day_sunny, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'clear_night') {
+        return Icon(WeatherIcons.night_clear, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'cloud') {
+        return Icon(WeatherIcons.cloud, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug == 'cloudly_day') {
+        return Icon(WeatherIcons.day_cloudy, color: color, size: size);
+      } else if (_controller.weather.results!.conditionSlug ==
+          'cloudly_night') {
+        return Icon(WeatherIcons.night_cloudy, color: color, size: size);
+      } else {
+        return Icon(Icons.report_problem_rounded, color: color, size: size);
+      }
+    });
+  }
+
+  // TODO: melhorar isso daqui
+  verifyWeatherIconForeCast(Color color, double size, Forecast forecast) {
+    if (forecast.condition == 'storm') {
+      return Icon(WeatherIcons.storm_showers, color: color, size: size);
+    } else if (forecast.condition == 'snow') {
+      return Icon(WeatherIcons.snow, color: color, size: size);
+    } else if (forecast.condition == 'hail') {
+      return Icon(WeatherIcons.hail, color: color, size: size);
+    } else if (forecast.condition == 'rain') {
+      return Icon(WeatherIcons.rain, color: color, size: size);
+    } else if (forecast.condition == 'fog') {
+      return Icon(WeatherIcons.fog, color: color, size: size);
+    } else if (forecast.condition == 'clear_day') {
+      return Icon(WeatherIcons.day_sunny, color: color, size: size);
+    } else if (forecast.condition == 'clear_night') {
+      return Icon(WeatherIcons.night_clear, color: color, size: size);
+    } else if (forecast.condition == 'cloud') {
+      return Icon(WeatherIcons.cloud, color: color, size: size);
+    } else if (forecast.condition == 'cloudly_day') {
+      return Icon(WeatherIcons.day_cloudy, color: color, size: size);
+    } else if (forecast.condition == 'cloudly_night') {
+      return Icon(WeatherIcons.night_cloudy, color: color, size: size);
+    } else {
+      return Icon(Icons.report_problem_rounded, color: color, size: size);
+    }
   }
 }
