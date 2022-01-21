@@ -25,6 +25,8 @@ abstract class _HomeControllerBase with Store {
   String dateInFull = "";
   @observable
   String weatherCode = "";
+  @observable
+  bool isError = false;
 
   @action
   setIsLoading(bool value) {
@@ -46,8 +48,14 @@ abstract class _HomeControllerBase with Store {
     dateInFull = value;
   }
 
+  @action
+  setIsError(bool value) {
+    isError = value;
+  }
+
   fetchData() async {
     try {
+      formatDate();
       setIsLoading(true);
       Position position = await requestPermissionLocation();
 
@@ -56,16 +64,18 @@ abstract class _HomeControllerBase with Store {
 
       if (weather.results!.toJson().isEmpty) {
         setIsLoading(false);
-        setMessage("Nenhuma resposta encontrada");
+        setIsError(true);
+        setMessage("Ops... Não foi possível carregar os dados!");
         return;
       }
 
-      formatDate();
       validNightMode(weather);
 
+      setIsError(false);
       setIsLoading(false);
     } catch (e) {
       setMessage("Ops... Ocorreu um erro!");
+      setIsError(true);
       setIsLoading(false);
       throw Exception('$e');
     }

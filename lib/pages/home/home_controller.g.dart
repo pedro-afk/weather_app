@@ -99,6 +99,21 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  final _$isErrorAtom = Atom(name: '_HomeControllerBase.isError');
+
+  @override
+  bool get isError {
+    _$isErrorAtom.reportRead();
+    return super.isError;
+  }
+
+  @override
+  set isError(bool value) {
+    _$isErrorAtom.reportWrite(value, super.isError, () {
+      super.isError = value;
+    });
+  }
+
   final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase');
 
@@ -147,6 +162,17 @@ mixin _$HomeController on _HomeControllerBase, Store {
   }
 
   @override
+  dynamic setIsError(bool value) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setIsError');
+    try {
+      return super.setIsError(value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 weather: ${weather},
@@ -154,7 +180,8 @@ isLoading: ${isLoading},
 message: ${message},
 isNight: ${isNight},
 dateInFull: ${dateInFull},
-weatherCode: ${weatherCode}
+weatherCode: ${weatherCode},
+isError: ${isError}
     ''';
   }
 }

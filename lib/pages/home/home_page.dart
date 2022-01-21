@@ -266,14 +266,56 @@ class _HomePageState extends State<HomePage> {
     return Observer(builder: (_) {
       if (_controller.isLoading) {
         return _buildLoading();
+      } else if (_controller.isError) {
+        return _buildError();
+      } else {
+        return _body();
       }
-      return _body();
     });
   }
 
   _buildLoading() {
     return const Center(
       child: CircularProgressIndicator(),
+    );
+  }
+
+  _buildError() {
+    return Observer(
+      builder: (_) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.error_outline_rounded,
+                color: Color(0xFF404040),
+                size: 70,
+              ),
+              const SizedBox(height: 50),
+              CustomText(
+                text: _controller.message,
+                color: Colors.red,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.grey),
+                ),
+                onPressed: () {
+                  _controller.fetchData();
+                },
+                child: CustomText(
+                  text: 'Tentar novamente',
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
