@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                       text: _controller.dateInFull,
                       color: Colors.white,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
                     CustomText(
                       text: "${_controller.weather.results!.temp!}°",
                       color: Colors.white,
