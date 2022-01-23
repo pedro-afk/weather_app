@@ -7,6 +7,6 @@ Um projeto de previsão do tempo com flutter, mobx como gerenciador de estado e 
 <table>
   <tr>
     <td valign="top"><img src="./assets/Screenshot_1642876004.png" /></td>
-    <td valign="top"><img src="./assets/Screenshot_1642901104.png" /></td>
+    <td valign="top"><img src="./assets/Screenshot_1642903279.png" /></td>
   </tr>
 </table>
