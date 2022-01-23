@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     return Observer(builder: (_) {
       return Scaffold(
         backgroundColor:
-            _controller.isNight ? const Color(0xFF202020) : Colors.grey[50],
+            _controller.isNight ? const Color(0xFF202020) : Colors.grey[100],
         body: _buildPage(),
       );
     });
@@ -40,7 +40,6 @@ class _HomePageState extends State<HomePage> {
     return Observer(builder: (_) {
       return ListView(
         children: [
-          const SizedBox(height: 20),
           Center(
             child: CustomText(
               text: _controller.weather.results!.city!,
@@ -54,6 +53,13 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(16.0),
             child: Container(
               decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0xFF404040),
+                    blurRadius: 5,
+                    offset: Offset(0, 2),
+                  ),
+                ],
                 color: _controller.isNight ? Colors.blueGrey : Colors.blue,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(20),
@@ -76,7 +82,6 @@ class _HomePageState extends State<HomePage> {
                       text: _controller.dateInFull,
                       color: Colors.white,
                     ),
-                    const SizedBox(height: 25),
                     CustomText(
                       text: "${_controller.weather.results!.temp!}°",
                       color: Colors.white,
