@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weatherapp/pages/home/home_page.dart';
+import 'package:weatherapp/page/home/home_page.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
