@@ -13,15 +13,25 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      localizationsDelegates: [
+    return MaterialApp(
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [Locale('pt', 'BR'), Locale('en', '')],
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            )
+          )
+        )
+      ),
+      supportedLocales: const [Locale('pt', 'BR'), Locale('en', '')],
       title: 'Weather App',
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

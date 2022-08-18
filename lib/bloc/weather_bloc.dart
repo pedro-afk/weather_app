@@ -14,18 +14,32 @@ class WeatherBloc {
 
   get weatherStream => _streamController.stream;
 
-  late final String dateFormatted;
-  late final bool isNight;
+  bool starting = true;
+  late bool loading;
+  late String dateFormatted;
+  late bool isNight;
+
+  void setStarting(bool value) => starting = value;
+  void setLoading(bool value) => loading = value;
+  void setIsNight(bool value) => isNight = value;
 
   loadWeather() async {
-    Position position = await requestPermissionLocation();
-    weather = await _homeRepository.fetchDataWeather(
-      lat: position.latitude.toString(),
-      lng: position.longitude.toString(),
-    );
-    validNightMode(weather);
-    formatDate();
-    _streamController.sink.add(weather);
+    try {
+      setLoading(true);
+      Position position = await requestPermissionLocation();
+      weather = await _homeRepository.fetchDataWeather(
+        lat: position.latitude.toString(),
+        lng: position.longitude.toString(),
+      );
+      validNightMode(weather);
+      formatDate();
+      setLoading(false);
+      setStarting(false);
+      _streamController.sink.add(weather);
+    } catch (e) {
+      setLoading(false);
+      throw Exception(e);
+    }
   }
 
   formatDate() {
@@ -35,9 +49,9 @@ class WeatherBloc {
 
   validNightMode(Weather weather) {
     if (weather.results!.currently!.contains("noite")) {
-      isNight = true;
+      setIsNight(true);
     } else {
-      isNight = false;
+      setIsNight(false);
     }
   }
 
