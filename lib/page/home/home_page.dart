@@ -28,39 +28,48 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Weather>(
-          stream: _bloc.weatherStream,
-          builder: (context, snapshot) {
-              return Scaffold(
-                backgroundColor: _bloc.starting ? Colors.grey[400] : _bloc.isNight ? const Color(0xFF202020) : Colors.white,
-                appBar: AppBar(
-                  title: CustomText(text: _bloc.loading ? "..." : snapshot.data!.results!.city!),
-                  backgroundColor: _bloc.starting ? Colors.grey[400] : _bloc.isNight ? const Color(0xFF404040) : Colors.blue,
-                  elevation: 0,
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _bloc.loadWeather();
-                        });
-                      },
-                      icon: const Icon(Icons.refresh)
-                    )
-                  ],
-                ),
-                body: _validateHasData(snapshot),
-              );
-          });
+        stream: _bloc.weatherStream,
+        builder: (context, snapshot) {
+          return Scaffold(
+            backgroundColor: _bloc.starting
+                ? Colors.grey[400]
+                : _bloc.isNight
+                    ? const Color(0xFF202020)
+                    : Colors.grey[300],
+            appBar: AppBar(
+              title: CustomText(
+                  text: _bloc.loading ? "..." : snapshot.data!.results!.city!),
+              backgroundColor: _bloc.starting
+                  ? Colors.grey[400]
+                  : _bloc.isNight
+                      ? const Color(0xFF404040)
+                      : Colors.blue,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _bloc.loadWeather();
+                      });
+                    },
+                    icon: const Icon(Icons.refresh))
+              ],
+            ),
+            body: _validateHasData(snapshot),
+          );
+        });
   }
 
   Widget _validateHasData(AsyncSnapshot snapshot) {
     if (snapshot.hasData) {
-      return _bloc.loading ? Center(
-        child: CircularProgressIndicator(
-          color: _bloc.isNight ? Colors.white : Colors.black,
-        )) : WeatherWidget(
-          weather: snapshot.data!,
-          isNight: _bloc.isNight,
-          dateInFull: _bloc.dateFormatted);
+      return _bloc.loading
+          ? Center(
+              child: CircularProgressIndicator(
+              color: _bloc.isNight ? Colors.white : Colors.black,
+            ))
+          : WeatherWidget(
+              weather: snapshot.data!,
+              isNight: _bloc.isNight,
+              dateInFull: _bloc.dateFormatted);
     } else if (snapshot.hasError) {
       return Center(child: CustomText(text: "Erro ao tentar fazer requisição"));
     } else {
@@ -69,5 +78,4 @@ class _HomePageState extends State<HomePage> {
       );
     }
   }
-
 }
