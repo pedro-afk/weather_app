@@ -1,16 +1,20 @@
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'package:weatherapp/model/weather.dart';
+import 'package:http/http.dart';
+import 'package:weatherapp/app/model/weather.dart';
 
-class HomeRepository {
+class WeatherRepository {
+  Client client;
+  WeatherRepository(this.client);
+
   Future<Weather> fetchDataWeather({String? lat, String? lng}) async {
     try {
-      final response = await http
+      final response = await client
           .get(
             Uri.parse(
-                'https://api.hgbrasil.com/weather?key=${dotenv.env['API_KEY']}&lat=$lat&lon=${lng}user_ip=remote'),
+              'https://api.hgbrasil.com/weather?key=${dotenv.env['API_KEY']}&lat=$lat&lon=${lng}user_ip=remote',
+            ),
           )
           .timeout(const Duration(seconds: 30));
 

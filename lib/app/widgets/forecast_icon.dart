@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/model/weather.dart';
+import 'package:weatherapp/app/model/forecast/forecast.dart';
 
 class ForecastIcons extends StatelessWidget {
   const ForecastIcons(
       {Key? key,
-        required this.color,
-        required this.size,
-        required this.forecast})
+      required this.color,
+      required this.size,
+      required this.forecast})
       : super(key: key);
   final Color color;
   final double size;

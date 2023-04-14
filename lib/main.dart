@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weatherapp/page/home/home_page.dart';
+import 'package:weatherapp/app/app_widget.dart';
+import 'package:weatherapp/app/di/injections.dart';
 
 Future<void> main() async {
+  injections();
   await dotenv.load(fileName: '.env');
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('pt', 'BR'), Locale('en', '')],
-      title: 'Weather App',
-      home: const HomePage(),
-    );
-  }
+  runApp(const AppWidget());
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp/bloc/weather_bloc.dart';
-import 'package:weatherapp/model/weather.dart';
-import 'package:weatherapp/widgets/weather_widget.dart';
-
-import '../../widgets/custom_text.dart';
+import 'package:weatherapp/app/bloc/weather_bloc.dart';
+import 'package:weatherapp/app/di/injections.dart';
+import 'package:weatherapp/app/model/weather.dart';
+import 'package:weatherapp/app/widgets/custom_text.dart';
+import 'package:weatherapp/app/widgets/weather_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _bloc = WeatherBloc();
+  final _bloc = getIt<WeatherBloc>();
 
   @override
   void initState() {
