@@ -20,8 +20,14 @@ class WeatherWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        CustomText(
+          weather.results!.city!,
+          fontSize: 20,
+          color: isNight ? Colors.white : Colors.black,
+        ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Container(
@@ -45,19 +51,19 @@ class WeatherWidget extends StatelessWidget {
                   WeatherIcon(color: Colors.white, size: 70, weather: weather),
                   const SizedBox(height: 25),
                   CustomText(
-                    text: weather.results!.description!,
+                    weather.results!.description!,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 24,
                   ),
                   const SizedBox(height: 10),
                   CustomText(
-                    text: dateInFull,
+                    dateInFull,
                     color: Colors.white,
                   ),
                   const SizedBox(height: 25),
                   CustomText(
-                    text: "${weather.results!.temp!}°",
+                    "${weather.results!.temp!}°",
                     color: Colors.white,
                     fontSize: 76,
                     fontWeight: FontWeight.w500,
@@ -86,12 +92,10 @@ class WeatherWidget extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  const CustomText("Vento",
+                                      color: Colors.white, fontSize: 16),
                                   CustomText(
-                                      text: "Vento",
-                                      color: Colors.white,
-                                      fontSize: 16),
-                                  CustomText(
-                                    text: weather.results!.windSpeedy!,
+                                    weather.results!.windSpeedy!,
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.w500,
@@ -120,12 +124,10 @@ class WeatherWidget extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  const CustomText("Umidade",
+                                      color: Colors.white, fontSize: 16),
                                   CustomText(
-                                      text: "Umidade",
-                                      color: Colors.white,
-                                      fontSize: 16),
-                                  CustomText(
-                                    text: "${weather.results!.humidity!}%",
+                                    "${weather.results!.humidity!}%",
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.w500,
@@ -167,7 +169,7 @@ class WeatherWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CustomText(
-                            text: "${forecast.date} - ",
+                            "${forecast.date} - ",
                             color: isNight
                                 ? Colors.white
                                 : const Color(0xFF404040),
@@ -175,7 +177,7 @@ class WeatherWidget extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                           CustomText(
-                            text: "${forecast.weekday}",
+                            "${forecast.weekday}",
                             color: isNight
                                 ? Colors.white
                                 : const Color(0xFF404040),
@@ -190,7 +192,7 @@ class WeatherWidget extends StatelessWidget {
                           const Icon(Icons.keyboard_arrow_up_rounded,
                               color: Colors.red),
                           CustomText(
-                            text: "${forecast.max}°",
+                            "${forecast.max}°",
                             color: isNight
                                 ? Colors.white
                                 : const Color(0xFF404040),
@@ -200,7 +202,7 @@ class WeatherWidget extends StatelessWidget {
                           const Icon(Icons.keyboard_arrow_down_rounded,
                               color: Colors.blue),
                           CustomText(
-                            text: "${forecast.min}°",
+                            "${forecast.min}°",
                             color: isNight
                                 ? Colors.white
                                 : const Color(0xFF404040),
@@ -210,7 +212,7 @@ class WeatherWidget extends StatelessWidget {
                         ],
                       ),
                       CustomText(
-                        text: "${forecast.description}",
+                        "${forecast.description}",
                         color: isNight ? Colors.white : const Color(0xFF404040),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -228,7 +230,6 @@ class WeatherWidget extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 10),
       ],
     );
   }

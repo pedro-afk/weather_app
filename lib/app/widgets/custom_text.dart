@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomText extends StatelessWidget {
-  CustomText(
+  const CustomText(this.text,
       {Key? key,
-      required this.text,
       this.color,
       this.decoration,
       this.textDecorationStyle,
@@ -24,13 +23,14 @@ class CustomText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-          color: color,
-          decoration: decoration,
-          decorationStyle: textDecorationStyle,
-          decorationThickness: decorationThickness,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          fontFamily: 'Poppins'),
+        color: color,
+        decoration: decoration,
+        decorationStyle: textDecorationStyle,
+        decorationThickness: decorationThickness,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        fontFamily: 'Poppins',
+      ),
     );
   }
 }

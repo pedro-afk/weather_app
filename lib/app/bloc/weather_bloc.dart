@@ -2,42 +2,50 @@ import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:weatherapp/app/bloc/weather_event.dart';
+import 'package:weatherapp/app/bloc/weather_state.dart';
 import 'package:weatherapp/app/model/weather.dart';
 import 'package:weatherapp/app/repository/weather_repository.dart';
 import 'package:weatherapp/app/services/get_location.dart';
 
 class WeatherBloc {
-  final WeatherRepository _homeRepository;
-  WeatherBloc(this._homeRepository);
+  final WeatherRepository _repository;
 
-  final _streamController = StreamController<Weather>.broadcast();
+  final _inputWeatherController = StreamController<WeatherEvent>();
+  final _outputWeatherController = StreamController<WeatherState>();
 
-  get weatherStream => _streamController.stream;
+  Sink<WeatherEvent> get inputWeather => _inputWeatherController.sink;
+  Stream<WeatherState> get stream => _outputWeatherController.stream;
 
-  bool starting = true;
-  late bool loading;
-  late String dateFormatted;
-  late bool isNight;
+  String dateFormatted = "";
+  bool isNight = false;
 
-  void setStarting(bool value) => starting = value;
-  void setLoading(bool value) => loading = value;
   void setIsNight(bool value) => isNight = value;
 
+  WeatherBloc(this._repository) {
+    _inputWeatherController.stream.listen(_mapEventToState);
+  }
+
+  void _mapEventToState(WeatherEvent event) async {
+    if (event is LoadWeatherEvent) {
+      loadWeather();
+    }
+  }
+
   Future<void> loadWeather() async {
+    _outputWeatherController.add(WeatherStateLoading());
     try {
-      setLoading(true);
       Position position = await requestPermissionLocation();
-      Weather weather = await _homeRepository.fetchDataWeather(
+      Weather weather = await _repository.fetchDataWeather(
         lat: position.latitude.toString(),
         lng: position.longitude.toString(),
       );
       validNightMode(weather);
       formatDate();
-      setLoading(false);
-      setStarting(false);
-      _streamController.sink.add(weather);
+
+      _outputWeatherController.add(WeatherStateSucess(weather: weather));
     } catch (e) {
-      setLoading(false);
+      _outputWeatherController.add(WeatherStateError());
       throw Exception(e);
     }
   }
@@ -55,7 +63,7 @@ class WeatherBloc {
     }
   }
 
-  void close() {
-    _streamController.close();
+  void dispose() {
+    _inputWeatherController.close();
   }
 }

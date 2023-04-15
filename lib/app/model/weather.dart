@@ -5,22 +5,22 @@ part 'weather.g.dart';
 @JsonSerializable()
 class Weather {
   @JsonKey(name: 'by')
-  String by;
+  String? by;
   @JsonKey(name: 'valid_key')
-  bool validKey;
+  bool? validKey;
   @JsonKey(name: 'results')
-  Result results;
+  Result? results;
   @JsonKey(name: 'execution_time')
-  double executionTime;
+  double? executionTime;
   @JsonKey(name: 'from_cache')
-  bool fromCache;
+  bool? fromCache;
 
   Weather({
-    required this.by,
-    required this.validKey,
-    required this.results,
-    required this.executionTime,
-    required this.fromCache,
+    this.by,
+    this.validKey,
+    this.results,
+    this.executionTime,
+    this.fromCache,
   });
 
   factory Weather.fromJson(Map<String, dynamic> data) =>
