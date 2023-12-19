@@ -1,4 +1,4 @@
-import 'package:weatherapp/app/model/weather.dart';
+import 'package:weatherapp/data/model/weather.dart';
 
 abstract class WeatherState {
   Weather? weather;

@@ -1,13 +1,11 @@
 import 'dart:async';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:weatherapp/app/bloc/weather_event.dart';
-import 'package:weatherapp/app/bloc/weather_state.dart';
-import 'package:weatherapp/app/model/weather.dart';
-import 'package:weatherapp/app/repository/weather_repository.dart';
-import 'package:weatherapp/app/services/get_location.dart';
-
+import 'package:weatherapp/data/model/weather.dart';
+import 'package:weatherapp/data/repository/weather_repository.dart';
+import 'package:weatherapp/data/services/get_location.dart';
+import 'package:weatherapp/presenter/bloc/weather_event.dart';
+import 'package:weatherapp/presenter/bloc/weather_state.dart';
 class WeatherBloc {
   final WeatherRepository _repository;
 

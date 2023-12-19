@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:weatherapp/app/model/forecast/forecast.dart';
+import 'package:weatherapp/data/model/forecast/forecast.dart';
 part 'result.g.dart';
 
 @JsonSerializable()

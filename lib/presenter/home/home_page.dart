@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp/app/bloc/weather_bloc.dart';
-import 'package:weatherapp/app/bloc/weather_event.dart';
-import 'package:weatherapp/app/bloc/weather_state.dart';
-import 'package:weatherapp/app/di/injections.dart';
-import 'package:weatherapp/app/widgets/custom_text.dart';
-import 'package:weatherapp/app/widgets/weather_widget.dart';
+import 'package:weatherapp/app/di.dart';
+import 'package:weatherapp/presenter/bloc/weather_bloc.dart';
+import 'package:weatherapp/presenter/bloc/weather_event.dart';
+import 'package:weatherapp/presenter/bloc/weather_state.dart';
+import 'package:weatherapp/presenter/widgets/custom_text.dart';
+import 'package:weatherapp/presenter/widgets/weather_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

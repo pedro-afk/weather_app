@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/app/model/forecast/forecast.dart';
-import 'package:weatherapp/app/model/weather.dart';
-import 'package:weatherapp/app/widgets/custom_text.dart';
-import 'package:weatherapp/app/widgets/weather_icon.dart';
+import 'package:weatherapp/data/model/forecast/forecast.dart';
+import 'package:weatherapp/data/model/weather.dart';
+import 'package:weatherapp/presenter/widgets/custom_text.dart';
+import 'package:weatherapp/presenter/widgets/weather_icon.dart';
 
 import 'forecast_icon.dart';
 

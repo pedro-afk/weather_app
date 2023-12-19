@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/app/model/forecast/forecast.dart';
+import 'package:weatherapp/data/model/forecast/forecast.dart';
 
 class ForecastIcons extends StatelessWidget {
   const ForecastIcons(
