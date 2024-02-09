@@ -6,30 +6,32 @@ part of 'result.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Result _$ResultFromJson(Map<String, dynamic> json) => Result(
-      temp: json['temp'] as int?,
-      date: json['date'] as String?,
-      time: json['time'] as String?,
-      conditionCode: json['condition_code'] as String?,
-      description: json['description'] as String?,
-      currently: json['currently'] as String?,
-      cid: json['cid'] as String?,
-      city: json['city'] as String?,
-      imgId: json['img_id'] as String?,
-      humidity: json['humidity'] as int?,
-      windSpeedy: json['wind_speedy'] as String?,
-      sunrise: json['sunrise'] as String?,
-      sunset: json['sunset'] as String?,
-      conditionSlug: json['condition_slug'] as String?,
-      cityName: json['city_name'] as String?,
-      forecast: (json['forecast'] as List<dynamic>?)
-          ?.map((e) => Forecast.fromJson(e as Map<String, dynamic>))
+ResultData _$ResultDataFromJson(Map<String, dynamic> json) => ResultData(
+      json['temp'] as int,
+      json['date'] as String,
+      json['time'] as String,
+      json['condition_code'] as String,
+      json['description'] as String,
+      json['currently'] as String,
+      json['cid'] as String,
+      json['city'] as String,
+      json['img_id'] as String,
+      json['humidity'] as int,
+      json['rain'] as int,
+      json['cloudiness'] as int,
+      json['wind_speedy'] as String,
+      json['sunrise'] as String,
+      json['sunset'] as String,
+      json['condition_slug'] as String,
+      json['city_name'] as String,
+      json['timezone'] as String,
+      (json['forecast'] as List<dynamic>)
+          .map((e) => ForecastData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+Map<String, dynamic> _$ResultDataToJson(ResultData instance) =>
+    <String, dynamic>{
       'temp': instance.temp,
       'date': instance.date,
       'time': instance.time,
@@ -40,12 +42,13 @@ Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'city': instance.city,
       'img_id': instance.imgId,
       'humidity': instance.humidity,
+      'rain': instance.rain,
+      'cloudiness': instance.cloudiness,
       'wind_speedy': instance.windSpeedy,
       'sunrise': instance.sunrise,
       'sunset': instance.sunset,
       'condition_slug': instance.conditionSlug,
       'city_name': instance.cityName,
+      'timezone': instance.timezone,
       'forecast': instance.forecast,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
     };

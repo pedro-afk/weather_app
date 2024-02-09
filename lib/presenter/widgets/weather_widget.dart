@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/data/model/forecast/forecast.dart';
-import 'package:weatherapp/data/model/weather.dart';
+import 'package:weatherapp/domain/weather.dart';
 import 'package:weatherapp/presenter/widgets/custom_text.dart';
 import 'package:weatherapp/presenter/widgets/weather_icon.dart';
 
@@ -24,7 +23,7 @@ class WeatherWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomText(
-          weather.results!.city!,
+          weather.results.city,
           fontSize: 20,
           color: isNight ? Colors.white : Colors.black,
         ),
@@ -51,7 +50,7 @@ class WeatherWidget extends StatelessWidget {
                   WeatherIcon(color: Colors.white, size: 70, weather: weather),
                   const SizedBox(height: 25),
                   CustomText(
-                    weather.results!.description!,
+                    weather.results.description,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 24,
@@ -63,7 +62,7 @@ class WeatherWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 25),
                   CustomText(
-                    "${weather.results!.temp!}°",
+                    "${weather.results.temp}°",
                     color: Colors.white,
                     fontSize: 76,
                     fontWeight: FontWeight.w500,
@@ -95,7 +94,7 @@ class WeatherWidget extends StatelessWidget {
                                   const CustomText("Vento",
                                       color: Colors.white, fontSize: 16),
                                   CustomText(
-                                    weather.results!.windSpeedy!,
+                                    weather.results.windSpeedy,
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.w500,
@@ -127,7 +126,7 @@ class WeatherWidget extends StatelessWidget {
                                   const CustomText("Umidade",
                                       color: Colors.white, fontSize: 16),
                                   CustomText(
-                                    "${weather.results!.humidity!}%",
+                                    "${weather.results.humidity}%",
                                     color: Colors.white,
                                     fontSize: 17,
                                     fontWeight: FontWeight.w500,
@@ -151,11 +150,11 @@ class WeatherWidget extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
-            itemCount: weather.results!.forecast!.length,
+            itemCount: weather.results.forecast.length,
             scrollDirection: Axis.horizontal,
             key: key,
             itemBuilder: (context, idx) {
-              Forecast forecast = weather.results!.forecast![idx];
+              Forecast forecast = weather.results.forecast[idx];
               return SizedBox(
                 width: 140,
                 child: Card(

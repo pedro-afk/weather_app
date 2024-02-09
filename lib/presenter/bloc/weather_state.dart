@@ -1,14 +1,18 @@
-import 'package:weatherapp/data/model/weather.dart';
+import 'package:weatherapp/domain/weather.dart';
 
 abstract class WeatherState {
   Weather? weather;
   WeatherState({this.weather});
 }
 
-class WeatherStateLoading extends WeatherState {}
-
-class WeatherStateSucess extends WeatherState {
-  WeatherStateSucess({required Weather weather}) : super(weather: weather);
+class WeatherStateLoading extends WeatherState {
+  WeatherStateLoading() : super(weather: null);
 }
 
-class WeatherStateError extends WeatherState {}
+class WeatherStateSuccess extends WeatherState {
+  WeatherStateSuccess({required Weather weather}) : super(weather: weather);
+}
+
+class WeatherStateError extends WeatherState {
+  WeatherStateError() : super(weather: null);
+}

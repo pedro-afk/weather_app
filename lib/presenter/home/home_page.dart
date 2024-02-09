@@ -14,11 +14,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late WeatherBloc _bloc;
+  final WeatherBloc _bloc = instance<WeatherBloc>();
 
   @override
   void initState() {
-    _bloc = getIt<WeatherBloc>();
+    _bloc.initListener();
     _bloc.inputWeather.add(LoadWeatherEvent());
     super.initState();
   }
@@ -31,38 +31,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<WeatherState>(
-      stream: _bloc.stream,
-      builder: (context, snapshot) {
-        return Scaffold(
-          backgroundColor:
-              _bloc.isNight ? const Color(0xFF202020) : Colors.grey[300],
-          body: snapshot.data is WeatherStateLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: _bloc.isNight ? Colors.white : Colors.black,
-                  ),
-                )
+    return Scaffold(
+      body: StreamBuilder<WeatherState>(
+        stream: _bloc.stream,
+        builder: (context, snapshot) {
+          return snapshot.data is WeatherStateLoading
+              ? const Center(child: CircularProgressIndicator())
               : snapshot.data is WeatherStateError
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CustomText(
+                          const CustomText(
                             "Não foi possível carregar as informações",
-                            color: _bloc.isNight ? Colors.white : Colors.black,
-                            fontSize: 18,
                           ),
                           const SizedBox(height: 10),
                           TextButton(
                             onPressed: () =>
                                 _bloc.inputWeather.add(LoadWeatherEvent()),
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.black,
-                            ),
                             child: const CustomText(
                               "Tentar novamente",
-                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -72,9 +60,9 @@ class _HomePageState extends State<HomePage> {
                       weather: snapshot.data!.weather!,
                       isNight: _bloc.isNight,
                       dateInFull: _bloc.dateFormatted,
-                    ),
-        );
-      },
+                    );
+        },
+      ),
     );
   }
 }

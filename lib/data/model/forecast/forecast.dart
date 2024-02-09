@@ -2,31 +2,37 @@ import 'package:json_annotation/json_annotation.dart';
 part 'forecast.g.dart';
 
 @JsonSerializable()
-class Forecast {
+class ForecastData {
   @JsonKey(name: 'date')
-  String? date;
+  String date;
   @JsonKey(name: 'weekday')
-  String? weekday;
+  String weekday;
   @JsonKey(name: 'max')
-  int? max;
+  int max;
   @JsonKey(name: 'min')
-  int? min;
+  int min;
+  @JsonKey(name: 'rain_probability')
+  String rainProbability;
+  @JsonKey(name: 'wind_speedy')
+  String windSpeedy;
   @JsonKey(name: 'description')
-  String? description;
+  String description;
   @JsonKey(name: 'condition')
-  String? condition;
+  String condition;
 
-  Forecast({
-    this.date,
-    this.weekday,
-    this.max,
-    this.min,
-    this.description,
-    this.condition,
+  ForecastData({
+    required this.date,
+    required this.weekday,
+    required this.max,
+    required this.min,
+    required this.rainProbability,
+    required this.windSpeedy,
+    required this.description,
+    required this.condition,
   });
 
-  factory Forecast.fromJson(Map<String, dynamic> data) =>
-      _$ForecastFromJson(data);
+  factory ForecastData.fromJson(Map<String, dynamic> data) =>
+      _$ForecastDataFromJson(data);
 
-  Map<String, dynamic> toJson() => _$ForecastToJson(this);
+  Map<String, dynamic> toJson() => _$ForecastDataToJson(this);
 }

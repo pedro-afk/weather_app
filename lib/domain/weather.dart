@@ -1,35 +1,41 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:weatherapp/data/model/forecast/forecast.dart';
-part 'result.g.dart';
+class Weather {
+  String by;
+  bool validKey;
+  Result results;
+  double executionTime;
+  bool fromCache;
 
-@JsonSerializable()
-class ResultData {
+  Weather(
+    this.by,
+    this.validKey,
+    this.results,
+    this.executionTime,
+    this.fromCache,
+  );
+}
+
+class Result {
   int temp;
   String date;
   String time;
-  @JsonKey(name: 'condition_code')
   String conditionCode;
   String description;
   String currently;
   String cid;
   String city;
-  @JsonKey(name: 'img_id')
   String imgId;
   int humidity;
   int rain;
   int cloudiness;
-  @JsonKey(name: 'wind_speedy')
   String windSpeedy;
   String sunrise;
   String sunset;
-  @JsonKey(name: 'condition_slug')
   String conditionSlug;
-  @JsonKey(name: 'city_name')
   String cityName;
   String timezone;
-  List<ForecastData> forecast = [];
+  List<Forecast> forecast = [];
 
-  ResultData(
+  Result(
       this.temp,
       this.date,
       this.time,
@@ -49,8 +55,26 @@ class ResultData {
       this.cityName,
       this.timezone,
       this.forecast);
+}
 
-  factory ResultData.fromJson(Map<String, dynamic> data) => _$ResultDataFromJson(data);
+class Forecast {
+  String date;
+  String weekday;
+  int max;
+  int min;
+  String rainProbability;
+  String windSpeedy;
+  String description;
+  String condition;
 
-  Map<String, dynamic> toJson() => _$ResultDataToJson(this);
+  Forecast(
+    this.date,
+    this.weekday,
+    this.max,
+    this.min,
+    this.rainProbability,
+    this.windSpeedy,
+    this.description,
+    this.condition,
+  );
 }

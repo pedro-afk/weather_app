@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:weatherapp/data/model/weather.dart';
 import 'package:weatherapp/data/repository/weather_repository.dart';
-import 'package:weatherapp/data/services/get_location.dart';
+import 'package:weatherapp/domain/weather.dart';
 import 'package:weatherapp/presenter/bloc/weather_event.dart';
 import 'package:weatherapp/presenter/bloc/weather_state.dart';
+
 class WeatherBloc {
   final WeatherRepository _repository;
 
@@ -20,7 +19,9 @@ class WeatherBloc {
 
   void setIsNight(bool value) => isNight = value;
 
-  WeatherBloc(this._repository) {
+  WeatherBloc(this._repository);
+
+  void initListener() {
     _inputWeatherController.stream.listen(_mapEventToState);
   }
 
@@ -33,15 +34,15 @@ class WeatherBloc {
   Future<void> loadWeather() async {
     _outputWeatherController.add(WeatherStateLoading());
     try {
-      Position position = await requestPermissionLocation();
-      Weather weather = await _repository.fetchDataWeather(
+     /* Position position = await requestPermissionLocation();
+      Weather? weather = null;*//* await _repository.fetchDataWeather(
         lat: position.latitude.toString(),
         lng: position.longitude.toString(),
-      );
-      validNightMode(weather);
+      );*//*
+      validNightMode(weather!);
       formatDate();
 
-      _outputWeatherController.add(WeatherStateSucess(weather: weather));
+      _outputWeatherController.add(WeatherStateSucess(weather: weather));*/
     } catch (e) {
       _outputWeatherController.add(WeatherStateError());
       throw Exception(e);
@@ -54,7 +55,7 @@ class WeatherBloc {
   }
 
   void validNightMode(Weather weather) {
-    if (weather.results!.currently!.contains("noite")) {
+    if (weather.results.currently.contains("noite")) {
       setIsNight(true);
     } else {
       setIsNight(false);
