@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weatherapp/app/page/home_page.dart';
-import 'package:weatherapp/app/routes/app_routes.dart';
+import 'package:weatherapp/presenter/resources/app_strings.dart';
+import 'package:weatherapp/presenter/resources/routes_manager.dart';
+import 'package:weatherapp/presenter/resources/theme_manager.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({Key? key}) : super(key: key);
@@ -13,11 +14,11 @@ class AppWidget extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      theme: getApplicationTheme(),
       supportedLocales: const [Locale('pt', 'BR'), Locale('en', '')],
-      title: 'Weather App',
-      // home: const HomePage(),
+      title: AppStrings.appTitle,
       initialRoute: Routes.home,
-      routes: {Routes.home: (context) => const HomePage()},
+      onGenerateRoute: RoutesManager.getRoute,
     );
   }
 }

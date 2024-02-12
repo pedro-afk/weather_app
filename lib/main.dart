@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weatherapp/app/app_widget.dart';
-import 'package:weatherapp/app/di/injections.dart';
+import 'package:weatherapp/app/di.dart';
 
 Future<void> main() async {
-  injections();
-  await dotenv.load(fileName: '.env');
+  WidgetsFlutterBinding.ensureInitialized();
+  await initAppModule();
   runApp(const AppWidget());
 }
