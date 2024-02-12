@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:weather_icons/weather_icons.dart';
-import 'package:weatherapp/domain/weather.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weatherapp/presenter/resources/assets_manager.dart';
 
 class WeatherIcon extends StatelessWidget {
   const WeatherIcon(
       {Key? key,
-        required this.color,
+        this.color,
         required this.size,
-        required this.weather})
+        required this.conditionSlug})
       : super(key: key);
-  final Color color;
+  final Color? color;
   final double size;
-  final Weather weather;
+  final String conditionSlug;
 
   @override
   Widget build(BuildContext context) {
-    if (weather.results!.conditionSlug == 'storm') {
-      return Icon(WeatherIcons.storm_showers, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'snow') {
-      return Icon(WeatherIcons.snow, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'hail') {
-      return Icon(WeatherIcons.hail, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'rain') {
-      return Icon(WeatherIcons.rain, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'fog') {
-      return Icon(WeatherIcons.fog, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'clear_day') {
-      return Icon(WeatherIcons.day_sunny, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'clear_night') {
-      return Icon(WeatherIcons.night_clear, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'cloud') {
-      return Icon(WeatherIcons.cloud, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'cloudly_day') {
-      return Icon(WeatherIcons.day_cloudy, color: color, size: size);
-    } else if (weather.results!.conditionSlug == 'cloudly_night') {
-      return Icon(WeatherIcons.night_cloudy, color: color, size: size);
-    } else {
-      return Icon(Icons.report_problem_rounded, color: color, size: size);
+    switch (conditionSlug) {
+      case 'storm':
+        return SvgPicture.asset(AssetsManager.storm, height: size);
+      case 'snow':
+        return SvgPicture.asset(AssetsManager.snow, height: size);
+      case 'hail':
+        return SvgPicture.asset(AssetsManager.hail, height: size);
+      case 'rain':
+        return SvgPicture.asset(AssetsManager.rain, height: size);
+      case 'fog':
+        return SvgPicture.asset(AssetsManager.fog, height: size);
+      case 'clear_day':
+        return SvgPicture.asset(AssetsManager.clearDay, height: size);
+      case 'clear_night':
+        return SvgPicture.asset(AssetsManager.clearNight, height: size);
+      case 'cloud':
+        return SvgPicture.asset(AssetsManager.cloud, height: size);
+      case 'cloudly_day':
+        return SvgPicture.asset(AssetsManager.cloudlyDay, height: size);
+      case 'cloudly_night':
+        return SvgPicture.asset(AssetsManager.cloudlyNight, height: size);
+      default:
+        return Icon(Icons.report_problem_rounded, color: color, size: size);
     }
   }
 }

@@ -24,9 +24,9 @@ class Result {
   String cid;
   String city;
   String imgId;
-  int humidity;
-  int rain;
-  int cloudiness;
+  double humidity;
+  double rain;
+  double cloudiness;
   String windSpeedy;
   String sunrise;
   String sunset;
@@ -62,10 +62,12 @@ class Forecast {
   String weekday;
   int max;
   int min;
-  String rainProbability;
+  int rainProbability;
   String windSpeedy;
   String description;
   String condition;
+  double rain;
+  double cloudiness;
 
   Forecast(
     this.date,
@@ -76,5 +78,7 @@ class Forecast {
     this.windSpeedy,
     this.description,
     this.condition,
+    this.rain,
+    this.cloudiness,
   );
 }

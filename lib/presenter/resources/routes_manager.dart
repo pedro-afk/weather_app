@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/app/di.dart';
 import 'package:weatherapp/presenter/home/home_page.dart';
 import 'package:weatherapp/presenter/resources/app_strings.dart';
 
 abstract class Routes {
-  static const String splash = '/splash';
-  static const String home = '/home';
+  static const String home = '/';
 }
 
 abstract class RoutesManager {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case Routes.home:
+        initHomeModule();
         return MaterialPageRoute(builder: (context) => const HomePage());
       default:
         return undefinedRoute();

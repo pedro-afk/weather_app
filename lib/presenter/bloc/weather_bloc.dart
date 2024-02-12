@@ -1,68 +1,82 @@
 import 'dart:async';
-import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:weatherapp/data/network/client_http.dart';
 import 'package:weatherapp/data/repository/weather_repository.dart';
+import 'package:weatherapp/data/services/get_location.dart';
 import 'package:weatherapp/domain/weather.dart';
 import 'package:weatherapp/presenter/bloc/weather_event.dart';
 import 'package:weatherapp/presenter/bloc/weather_state.dart';
 
 class WeatherBloc {
-  final WeatherRepository _repository;
-
   final _inputWeatherController = StreamController<WeatherEvent>();
-  final _outputWeatherController = StreamController<WeatherState>();
+  final _outputWeatherController = StreamController<WeatherState>.broadcast();
 
-  Sink<WeatherEvent> get inputWeather => _inputWeatherController.sink;
-  Stream<WeatherState> get stream => _outputWeatherController.stream;
+  Stream<WeatherEvent> get inputWeatherStream => _inputWeatherController.stream;
+  Sink<WeatherEvent> get inputWeatherEvent => _inputWeatherController.sink;
+  Stream<WeatherState> get outputWeatherStream => _outputWeatherController.stream;
+  Sink<WeatherState> get outputWeatherState => _outputWeatherController.sink;
 
-  String dateFormatted = "";
-  bool isNight = false;
+  final WeatherRepository _repository;
+  final GeolocationService geolocationService;
 
-  void setIsNight(bool value) => isNight = value;
+  WeatherBloc(this._repository, this.geolocationService);
 
-  WeatherBloc(this._repository);
-
-  void initListener() {
-    _inputWeatherController.stream.listen(_mapEventToState);
+  void initialize() {
+    inputWeatherEvent.add(WeatherInitializeEvent());
+    inputWeatherStream.listen(mapEventToState);
   }
 
-  void _mapEventToState(WeatherEvent event) async {
-    if (event is LoadWeatherEvent) {
-      loadWeather();
+  void mapEventToState(WeatherEvent event) async {
+    if (event is WeatherInitializeEvent) {
+      await loadWeather();
+    } else if (event is WeatherEventRequestLocationPermission) {
+      outputWeatherState.add(WeatherRequestPermissionState());
+    } else if (event is WeatherEventError) {
+      outputWeatherState.add(
+        WeatherStateError(
+          weather: event.weather,
+          errorMessage: event.errorMessage,
+        ),
+      );
+    } else if (event is WeatherEventSuccess) {
+      outputWeatherState.add(
+        WeatherStateSuccess(weather: event.weather),
+      );
+    } else if (event is WeatherEventLoading) {
+      outputWeatherState.add(WeatherStateLoading());
     }
   }
 
   Future<void> loadWeather() async {
-    _outputWeatherController.add(WeatherStateLoading());
+    inputWeatherEvent.add(WeatherEventLoading());
     try {
-     /* Position position = await requestPermissionLocation();
-      Weather? weather = null;*//* await _repository.fetchDataWeather(
-        lat: position.latitude.toString(),
-        lng: position.longitude.toString(),
-      );*//*
-      validNightMode(weather!);
-      formatDate();
+      LocationPermission permissionStatus =
+          await geolocationService.getStatusPermission();
 
-      _outputWeatherController.add(WeatherStateSucess(weather: weather));*/
+      if (permissionStatus == LocationPermission.denied ||
+          permissionStatus == LocationPermission.deniedForever) {
+        inputWeatherEvent.add(WeatherEventRequestLocationPermission());
+        return;
+      }
+      Position position = await geolocationService.getCurrentPosition();
+      Weather? weather = await _repository.fetchDataWeather(
+          position.latitude.toString(), position.longitude.toString());
+      if (weather != null) {
+        inputWeatherEvent.add(WeatherEventSuccess(weather: weather));
+      }
+    } on ClientHttpException catch (e) {
+      inputWeatherEvent.add(WeatherEventError(e.message));
     } catch (e) {
-      _outputWeatherController.add(WeatherStateError());
-      throw Exception(e);
-    }
-  }
-
-  void formatDate() {
-    String dateString = DateFormat('MMMMEEEEd', "pt_BR").format(DateTime.now());
-    dateFormatted = dateString;
-  }
-
-  void validNightMode(Weather weather) {
-    if (weather.results.currently.contains("noite")) {
-      setIsNight(true);
-    } else {
-      setIsNight(false);
+      inputWeatherEvent.add(
+        WeatherEventError(
+          "Ops... An error happened on system",
+        ),
+      );
     }
   }
 
   void dispose() {
+    _outputWeatherController.close();
     _inputWeatherController.close();
   }
 }

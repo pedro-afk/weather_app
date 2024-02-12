@@ -2,14 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:weatherapp/data/network/api_endpoints.dart';
 
 abstract class ClientFactory {
-  static HttpClient getInstance() {
-    HttpClient client = HttpClient();
-    client.options.baseUrl = ApiEndpoints.baseUrl;
+  static ClientHttp getInstance() {
+    Dio dio = Dio();
+    dio.options.baseUrl = ApiEndpoints.baseUrl;
+    ClientHttp client = ClientHttp(dio);
     return client;
   }
 }
 
-class HttpClient extends DioMixin {
+class ClientHttp with DioMixin {
+  final Dio _dio;
+  ClientHttp(this._dio);
   @override
   Future<Response<T>> get<T>(String path,
       {Map<String, dynamic>? queryParameters,
@@ -17,7 +20,7 @@ class HttpClient extends DioMixin {
       Options? options,
       CancelToken? cancelToken,
       ProgressCallback? onReceiveProgress}) {
-    return super.get(
+    return _dio.get(
       path,
       queryParameters: queryParameters,
       data: data,
@@ -26,4 +29,17 @@ class HttpClient extends DioMixin {
       onReceiveProgress: onReceiveProgress,
     );
   }
+}
+
+class ClientHttpException extends DioException {
+  ClientHttpException({
+    required RequestOptions requestOptions,
+    Response<dynamic>? response,
+    String? message,
+    StackTrace? stackTrace,
+  }) : super(
+            requestOptions: requestOptions,
+            response: response,
+            message: message,
+            stackTrace: stackTrace);
 }

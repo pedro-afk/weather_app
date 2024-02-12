@@ -11,10 +11,12 @@ ForecastData _$ForecastDataFromJson(Map<String, dynamic> json) => ForecastData(
       weekday: json['weekday'] as String,
       max: json['max'] as int,
       min: json['min'] as int,
-      rainProbability: json['rain_probability'] as String,
+      rainProbability: json['rain_probability'] as int,
       windSpeedy: json['wind_speedy'] as String,
       description: json['description'] as String,
       condition: json['condition'] as String,
+      cloudiness: (json['cloudiness'] as num).toDouble(),
+      rain: (json['rain'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ForecastDataToJson(ForecastData instance) =>
@@ -27,4 +29,6 @@ Map<String, dynamic> _$ForecastDataToJson(ForecastData instance) =>
       'wind_speedy': instance.windSpeedy,
       'description': instance.description,
       'condition': instance.condition,
+      'rain': instance.rain,
+      'cloudiness': instance.cloudiness,
     };

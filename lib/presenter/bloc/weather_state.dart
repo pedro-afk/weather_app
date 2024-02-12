@@ -2,7 +2,9 @@ import 'package:weatherapp/domain/weather.dart';
 
 abstract class WeatherState {
   Weather? weather;
-  WeatherState({this.weather});
+  String? errorMessage;
+
+  WeatherState({this.weather, this.errorMessage});
 }
 
 class WeatherStateLoading extends WeatherState {
@@ -14,5 +16,13 @@ class WeatherStateSuccess extends WeatherState {
 }
 
 class WeatherStateError extends WeatherState {
-  WeatherStateError() : super(weather: null);
+  WeatherStateError({String? errorMessage, Weather? weather})
+      : super(
+          weather: weather,
+          errorMessage: errorMessage,
+        );
+}
+
+class WeatherRequestPermissionState extends WeatherState {
+  WeatherRequestPermissionState() : super(weather: null);
 }

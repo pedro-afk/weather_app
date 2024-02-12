@@ -52,6 +52,8 @@ extension ForecastDataMapper on ForecastData {
       windSpeedy,
       description,
       condition,
+      rain,
+      cloudiness,
     );
   }
 }

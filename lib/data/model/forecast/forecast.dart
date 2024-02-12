@@ -12,13 +12,15 @@ class ForecastData {
   @JsonKey(name: 'min')
   int min;
   @JsonKey(name: 'rain_probability')
-  String rainProbability;
+  int rainProbability;
   @JsonKey(name: 'wind_speedy')
   String windSpeedy;
   @JsonKey(name: 'description')
   String description;
   @JsonKey(name: 'condition')
   String condition;
+  double rain;
+  double cloudiness;
 
   ForecastData({
     required this.date,
@@ -29,6 +31,8 @@ class ForecastData {
     required this.windSpeedy,
     required this.description,
     required this.condition,
+    required this.cloudiness,
+    required this.rain,
   });
 
   factory ForecastData.fromJson(Map<String, dynamic> data) =>

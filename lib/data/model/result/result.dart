@@ -15,9 +15,9 @@ class ResultData {
   String city;
   @JsonKey(name: 'img_id')
   String imgId;
-  int humidity;
-  int rain;
-  int cloudiness;
+  double humidity;
+  double rain;
+  double cloudiness;
   @JsonKey(name: 'wind_speedy')
   String windSpeedy;
   String sunrise;

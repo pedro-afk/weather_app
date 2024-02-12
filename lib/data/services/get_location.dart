@@ -1,27 +1,46 @@
 import 'package:geolocator/geolocator.dart';
 
-Future<Position> requestPermissionLocation() async {
-  bool serviceEnabled;
-  LocationPermission permission;
+abstract class GeolocationService {
+  Future<LocationPermission> requestPermissionLocation();
+  Future<LocationPermission> getStatusPermission();
+  Future<Position> getCurrentPosition();
+}
 
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-  if (!serviceEnabled) {
-    return Future.error('Serviço de localização desativado.');
+class GeolocationServiceImpl implements GeolocationService {
+  @override
+  Future<Position> getCurrentPosition() async {
+    return await Geolocator.getCurrentPosition();
   }
 
-  permission = await Geolocator.checkPermission();
+  @override
+  Future<LocationPermission> requestPermissionLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return Future.error('Serviço de localização desativado.');
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      return LocationPermission.unableToDetermine;
     }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return permission;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return permission;
+    }
+
+    return permission;
   }
 
-  if (permission == LocationPermission.deniedForever) {
-    return Future.error('Serviço de localização desativado permanentemente.');
+  @override
+  Future<LocationPermission> getStatusPermission() async {
+    return await Geolocator.checkPermission();
   }
-
-  return await Geolocator.getCurrentPosition();
 }
